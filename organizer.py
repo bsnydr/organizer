@@ -417,7 +417,13 @@ def apply(decisions: List[Decision], dry_run: bool = False) -> Tuple[List, List]
         if d.confidence < AUTO_CONFIDENCE:
             # Route to _inbox/_review/ with a proposal note
             target = REVIEW / d.src.name
-            proposal = REVIEW / f"{d.src.stem}_proposal.txt"
+            if target.exists():
+                # Collision: append _2 etc. so a same-named file isn't overwritten
+                i = 2
+                while target.with_name(f"{target.stem}_{i}{target.suffix}").exists():
+                    i += 1
+                target = target.with_name(f"{target.stem}_{i}{target.suffix}")
+            proposal = REVIEW / f"{target.stem}_proposal.txt"
             if not dry_run:
                 shutil.move(str(d.src), str(target))
                 proposal.write_text(json.dumps(d.to_dict(), indent=2))
