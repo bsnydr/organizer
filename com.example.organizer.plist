@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.example.organizer</string>
+
+  <!-- Edit this absolute path to point at organizer.py in your checkout. -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/python3</string>
+    <string>/Users/YOUR_USERNAME/path/to/organizer/organizer.py</string>
+  </array>
+
+  <!-- Run every 10 minutes, and once when loaded. A predictable interval
+       (not event-driven file watching) so downloads and sync settle before
+       a file is touched. -->
+  <key>StartInterval</key>
+  <integer>600</integer>
+  <key>RunAtLoad</key>
+  <true/>
+
+  <!-- Point ORGANIZER_ROOT at the folder you want managed. -->
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>ORGANIZER_ROOT</key>
+    <string>/Users/YOUR_USERNAME/Documents/Organized</string>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>/Users/YOUR_USERNAME/Library/Logs/organizer.stdout</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/YOUR_USERNAME/Library/Logs/organizer.stderr</string>
+</dict>
+</plist>
