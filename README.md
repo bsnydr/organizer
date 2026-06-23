@@ -1,5 +1,7 @@
 # organizer
 
+[![tests](https://github.com/bsnydr/organizer/actions/workflows/tests.yml/badge.svg)](https://github.com/bsnydr/organizer/actions/workflows/tests.yml)
+
 Local LLM file organizer for macOS. Watches an inbox folder, classifies each dropped file with a model running on your own machine, and routes it into a fixed folder taxonomy. Every run is reversible and nothing leaves the machine.
 
 The problem it solves: an inbox folder that fills with CSV exports, meeting transcripts, PDFs, screenshots, and design assets, all named whatever the source tool happened to call them. Sorting them by hand is tedious and easy to defer indefinitely. Cloud-based auto-filing means handing every file's contents to a third-party API. This does the filing automatically, renames files to a consistent convention, and runs inference locally against Ollama, so file contents never touch the network. The safety properties matter more than the automation: a confidence gate means uncertain files get flagged instead of misfiled, and every run writes a one-command undo script.
