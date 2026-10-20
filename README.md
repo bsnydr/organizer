@@ -100,7 +100,6 @@ Key components in the single file:
 - The taxonomy, regex rules, and category vocabulary are constants at the top of the file. They should live in an external config (TOML or YAML) so customizing for a different corpus does not mean editing source.
 - The root path is configurable via the `ORGANIZER_ROOT` environment variable, but the taxonomy still is not; both should be config.
 - Folder classification is pure extension-ratio heuristics and never consults the model. Routing ambiguous folders through the LLM (or at least through the review queue) would catch the mixed-content cases it currently dumps into `_archive`.
-- There are no automated tests. The pure functions (`propose_canonical`, `regex_classify`, the confidence gate) are deterministic and would be straightforward to cover, which matters more than usual for code that moves files unattended.
 - Undo scripts accumulate with no retention policy.
 
 ## Running on a schedule
@@ -145,6 +144,16 @@ Configuration lives in the constants block at the top of `organizer.py` (plus th
 - **Quiet period is a heuristic, not a guarantee.** A 60-second window covers ordinary downloads and sync, but a very slow transfer that pauses mid-write for over a minute could still be picked up early. The undo script is the backstop.
 - **Classification quality is bounded by a 7B local model.** Ambiguous files are expected to land in `_review/` rather than be filed perfectly; that is the design working as intended, not a failure mode to tune away entirely.
 - **Shipped taxonomy and rules are examples.** Out of the box it will route by extension and a few generic filename patterns. It becomes genuinely useful only after you adapt the taxonomy and rules to your own files.
+
+## Tests
+
+The deterministic tests isolate temp files and never contact Ollama. They cover the confidence gate, review and move collisions, undo-script generation, naming, the regex/extension fast path and dry-run behavior.
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+macOS integration (launchd, notifications) and live model behavior are not covered.
 
 ## License
 
